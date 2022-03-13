@@ -3,6 +3,7 @@ name = "openfare-rs"
 version = "0.1.0"
 authors = ["rndhouse <rndhouse@protonmail.com>"]
 edition = "2021"
+homepage = "https://openfare.dev"
 repository = "https://github.com/openfare/openfare-rs"
 license-file = "LICENSE"
 description = "Rust ecosystem extension for OpenFare."
