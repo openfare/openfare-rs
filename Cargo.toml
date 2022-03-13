@@ -1,0 +1,47 @@
+[package]
+name = "openfare-rs"
+version = "0.1.0"
+authors = ["rndhouse <rndhouse@protonmail.com>"]
+edition = "2021"
+repository = "https://github.com/openfare/openfare-rs"
+license-file = "LICENSE"
+description = "Rust ecosystem extension for OpenFare."
+
+[lib]
+name = "openfare_rs_lib"
+path = "src/lib.rs"
+
+[[bin]]
+name = "openfare-rs"
+path = "src/bin.rs"
+
+[dependencies]
+openfare-lib = "0.6.1"
+
+cargo = "0.60.0"
+
+anyhow = "1.0.31"
+structopt = "0.3.14"
+strum = "0.20.0"
+strum_macros = "0.20.1"
+maplit = "1.0.2"
+tempdir = "0.3.7"
+env_logger = "0.8.2"
+log = "0.4.8"
+
+url = "2.1.1"
+reqwest = { version = "0.10.6", features = ["blocking"] }
+
+handlebars = "3.1.0"
+serde = { version = "1.0.104", features = ["derive"] }
+serde_json = "1.0.48"
+toml = "0.5.8"
+
+# Add openssl-sys as a direct dependency so it can be cross compiled to
+# x86_64-unknown-linux-musl using the "vendored" feature below
+openssl-sys = "0.9.72"
+
+[features]
+# Force openssl-sys to statically link in the openssl library. Necessary when
+# cross compiling to x86_64-unknown-linux-musl.
+vendored = ["openssl-sys/vendored"]
