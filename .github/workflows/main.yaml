@@ -26,14 +26,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # os: [windows-latest, macos-latest, ubuntu-latest]
-        os: [ubuntu-latest]
+        os: [windows-latest, macos-latest, ubuntu-latest]
         include:
-          # - os: windows-latest
-          #   target: x86_64-pc-windows-msvc
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
           
-          # - os: macos-latest
-          #   target: x86_64-apple-darwin
+          - os: macos-latest
+            target: x86_64-apple-darwin
 
           - os: ubuntu-latest
             target: x86_64-unknown-linux-musl
@@ -63,6 +62,7 @@ jobs:
         run: |
             alias podman="sudo docker"
             mkdir -p ${{ github.workspace }}/target/${{ matrix.target }}/release
+            ls -la ${{ github.workspace }}
             ${{ github.workspace }}/build/musl/build-release.sh ${{ steps.meta.outputs.NAME }} ${{ github.workspace }}/target/${{ matrix.target }}/release/${{ steps.meta.outputs.NAME }}
 
       - name: Build non-musl
