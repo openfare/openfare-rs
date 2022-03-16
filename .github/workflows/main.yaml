@@ -65,12 +65,6 @@ jobs:
             mkdir -p target/${{ matrix.target }}/release
             ./build/musl/build-release.sh ${{ steps.meta.outputs.NAME }} ./target/${{ matrix.target }}/release/${{ steps.meta.outputs.NAME }}
 
-      - name: Install OpenSSL on Windows
-        if: "contains(matrix.target, 'x86_64-pc-windows-msvc')"
-        run: |
-          c:\vcpkg\vcpkg install --recurse openssl --triplet x64-windows
-        shell: cmd
-
       - name: Build non-musl
         if: "!contains(matrix.target, 'x86_64-unknown-linux-musl')"
         env:
