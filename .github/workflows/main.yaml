@@ -63,7 +63,7 @@ jobs:
         run: |
             alias podman="sudo docker"
             mkdir -p ${{ github.workspace }}/target/${{ matrix.target }}/release
-            ./build/musl/build-release.sh ${{ steps.meta.outputs.NAME }} ${{ github.workspace }}/target/${{ matrix.target }}/release/${{ steps.meta.outputs.NAME }}
+            ${{ github.workspace }}/build/musl/build-release.sh ${{ steps.meta.outputs.NAME }} ${{ github.workspace }}/target/${{ matrix.target }}/release/${{ steps.meta.outputs.NAME }}
 
       - name: Build non-musl
         if: "!contains(matrix.target, 'x86_64-unknown-linux-musl')"
