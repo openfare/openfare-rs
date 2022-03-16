@@ -58,37 +58,12 @@ jobs:
           toolchain: stable
           target: ${{ matrix.target }}
 
-      - name: Setup for musl
-        id: musl-setup
-        if: "contains(matrix.target, 'x86_64-unknown-linux-musl')"
-        env:
-          DEP_Z_INCLUDE: /usr/include
-        run: |
-            sudo apt install libssl-dev zlib1g-dev musl musl-dev musl-tools
-            (
-              wget https://www.openssl.org/source/openssl-1.0.2o.tar.gz && \
-              tar -xf openssl-1.0.2o.tar.gz && \
-              cd openssl-1.0.2o  && \
-              CC=musl-gcc ./config --static --prefix=/usr/local/openssl --openssldir=/usr/local/openssl shared zlib && \
-              make && \
-              make test && \
-              sudo make install
-            )
-
       - name: Build musl
         if: "contains(matrix.target, 'x86_64-unknown-linux-musl')"
-        env:
-          OPENSSL_STATIC: yes
-          OPENSSL_DIR: /usr/local/openssl
-          DEP_Z_INCLUDE: /usr/include
-          PKG_CONFIG_ALLOW_CROSS: 1
-          PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig
-        uses: marcopolo/cargo@master
-        with:
-          command: build
-          args: --release --locked --all-features --verbose --package ${{ steps.meta.outputs.NAME }} --target ${{ matrix.target }}
-          working-directory: ${{ steps.meta.outputs.NAME }}
-          toolchain: stable
+        run: |
+            alias podman="sudo docker"
+            mkdir -p ${{ github.workspace }}/target/${{ matrix.target }}/release
+            ./build/musl/build-release.sh ${{ steps.meta.outputs.NAME }} ${{ github.workspace }}/target/${{ matrix.target }}/release/${{ steps.meta.outputs.NAME }}
 
       - name: Build non-musl
         if: "!contains(matrix.target, 'x86_64-unknown-linux-musl')"
